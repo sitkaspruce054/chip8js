@@ -1,12 +1,12 @@
 
 
 
-export const INSTUCTION_SET = [
+ const INSTRUCTION_SET = [
     //00E0
     {
-        id: 'SYS_ADDR',
+        id: 'CLS',
 
-        name: 'SYS',
+        name: 'CLS',
         
         // the bitmask we use to get the pattern for the instruction
         mask: 0x00ff,
@@ -779,3 +779,5 @@ export const INSTUCTION_SET = [
         ]
     },
 ]
+
+export { INSTRUCTION_SET }
