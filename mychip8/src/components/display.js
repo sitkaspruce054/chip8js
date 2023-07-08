@@ -27,12 +27,18 @@ function Display({ current_program, activeKey, keyPressed }) {
   },);
 
   useEffect(()=>{
-    set_cpu_state(new Chip8_CPU(current_program))
+    //console.log('zaza
+    if(current_program){
+      console.log('here')
+      console.log(current_program)
+      set_cpu_state(new Chip8_CPU(current_program))
+      cpu_state.loadRom(current_program)
+    }
+    else{
+      return
+    }
   },[current_program]);
 
-  useEffect(()=>{
-
-  },);
 
   return (
     <>

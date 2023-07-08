@@ -132,14 +132,14 @@ class Chip8_CPU {
         }
     }
     
-    async loadRom(){
-        const rom_file = await fetch(`./roms/IBM.ch8`)
-        const arr_buffer = await rom_file.arrayBuffer()
+    async loadRom(prg){
+        //const rom_file = await fetch(`./roms/IBM.ch8`)
+        const arr_buffer = await prg.arrayBuffer()
         const uint8_disp = new Uint8Array(arr_buffer)
         const rom_buffer = new RomReader(uint8_disp)
         console.log(rom_buffer)
-        this.interface.clearDisplay()
-        this.load(rom_buffer)
+        
+        
       }
     // this is the main loop
     step() {
