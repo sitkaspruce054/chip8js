@@ -1,28 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
-import { Chip8_CPU } from './components/cpu';
-import { Interface } from './components/IoInterface';
-import { RomReader } from './components/rom_reader';
+import Emulator from './components/Emulator'
+import displayContext from './components/displayContext'
+import React from 'react';
+import { useState } from 'react';
+import 'react-dom'
 
 
 
-
-function App() {
-  const canvas = <canvas class="lmao"></canvas>
-  const cpuInterface = new Interface()
-  //const cpu = new Chip8_CPU(cpuInterface)
-  const test = <div></div>
-  
-  cpuInterface.drawPixel(34,32,3)
-  //cpuInterface.updateDisplay()
-  document.body.appendChild(cpuInterface.display)
-  
-  
-  
-  
-  return (
-    <h1></h1>
-  );
+function App(){
+  const [displayState, setDisplayState ] = useState(new Array(64*32).fill(0))
+  return(
+    
+    <displayContext.Provider value={{displayState,setDisplayState}}>
+      <h1>emu</h1>
+      <Emulator props ={{displayState,setDisplayState}}/>
+    </displayContext.Provider>
+  )
 }
+
 
 export default App;

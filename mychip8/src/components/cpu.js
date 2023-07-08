@@ -4,12 +4,19 @@ import { INSTRUCTION_SET } from "./instructions"
 import { RomReader } from "./rom_reader"
 
 import disassemble from "./dissasembler"
+import React from "react"
+import { useState } from "react"
+import { Interface } from "./Display"
 
-import { Interface } from "./IoInterface"
-
-class Chip8_CPU{
-    constructor(Interface) {
-        this.interface = Interface
+class Chip8_CPU {
+    constructor(file) {
+        
+        this.internal_display = new Array(32*64).fill(0)
+        //console.log(setDisplayState,'wasdasdasda')
+        
+        //console.log(this.displayState)
+        //console.log(this.displayState,'asdas')
+        //this.setDisplayState = setDisplayState
         // the original chip8 used 4096 bytes
         this.memory = new Uint8Array(4096)
         // 16 registers: V0x0, V0x1, V0x2,... V0xF (hexadecimal)
@@ -124,7 +131,7 @@ class Chip8_CPU{
                 }
         }
     }
-
+    
     async loadRom(){
         const rom_file = await fetch(`./roms/IBM.ch8`)
         const arr_buffer = await rom_file.arrayBuffer()
