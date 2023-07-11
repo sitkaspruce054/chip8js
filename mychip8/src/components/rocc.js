@@ -5,6 +5,7 @@
 //this will be how we render the screen itself, using the global context
 
 import React, { useEffect, useRef, useContext,useState } from "react";
+import { RomReader } from "./rom_reader";
 import displayContext from "./displayContext";
 import { Chip8_CPU } from "./cpu";
 /**OVERALL STRUCTURE
@@ -12,7 +13,7 @@ import { Chip8_CPU } from "./cpu";
  * This component will mediate the cpu flow, taking in the currentProgram, key-setting function, and the currently pressed key. It will use the useEffect to load in the file, listen for keys pressed, as well as to loop the cpu (using 
  * cpustate and keypressed as dependencies )
  */
-function Display({ current_program, activeKey, keyPressed }) {
+function Display({ current_program, currentKey, updateCurrentKey }) {
   const [cpu_state, set_cpu_state] = useState();
 
   const canvasRef = useRef(null);
@@ -25,21 +26,49 @@ function Display({ current_program, activeKey, keyPressed }) {
 
 
   },);
-
+  
   useEffect(()=>{
-    //console.log('zaza
+    
     if(current_program){
       console.log('here')
-      console.log(current_program)
-      set_cpu_state(new Chip8_CPU(current_program))
-      cpu_state.loadRom(current_program)
+      
+      
+      let parsed_prgm = new RomReader(current_program)
+      
+      let new_state = new Chip8_CPU(parsed_prgm)
+      //console.log(new_state.current_program)
+      
+      set_cpu_state(new_state)
+      
+      //cpu_state.rom_loader()
+      
     }
     else{
       return
     }
   },[current_program]);
+  //console.log(cpu_state)
+  useEffect(()=>{
 
+    if(cpu_state){
+      cpu_state.addSpritestoMem()
+      cpu_state.loadIntoMem(cpu_state.current_program)
+      //console.log(cpu_state)
+      setInterval(() => {
+        //console.log('in here now')
+        
+        cpu_state.step(currentKey,canvasRef.current.getContext('2d'))
+    }, 3000);
 
+    return ()=> clearInterval()
+    }
+    else{
+      console.log('shhshs')
+      return
+    }
+    
+},[cpu_state])
+  
   return (
     <>
       <canvas ref={canvasRef} height={320} width={640}/>

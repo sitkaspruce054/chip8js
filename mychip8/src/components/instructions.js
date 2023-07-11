@@ -30,7 +30,7 @@
         name: 'RET',
         
         // the bitmask we use to get the pattern for the instruction
-        mask: 0x00ff,
+        mask: 0xffff,
         //the pattern we get from using the bitmask correctly
         pattern: 0x00EE,
 
@@ -39,8 +39,7 @@
             //shift: the right-shift we must use to get the values
             //type: the type of variable
         arguments: [
-            
-            
+  
         ]
     },
 
@@ -130,7 +129,7 @@
 
     //5xy0: SE Vx, Vy
     {
-        id: 'LD_VX_byte',
+        id: 'SE_VX_VY',
 
         name: 'LD',
         
@@ -151,7 +150,7 @@
 
     //6Xkk: LD Vx, byte
     {
-        id: 'LD_VX_byte',
+        id: 'LD_VX_BYTE',
 
         name: 'LD',
         
@@ -172,7 +171,7 @@
 
     //7Xkk: ADD Vx, byte
     {
-        id: 'ADD_VX_byte',
+        id: 'ADD_VX_BYTE',
 
         name: 'ADD',
         
@@ -319,7 +318,7 @@
 
     // 8xy6: SHR Vx {, Vy}
     {
-        id: 'SHR_Vx_{Vy}',
+        id: 'SHR_VX_VY',
 
         name: 'SHR',
         
@@ -340,7 +339,7 @@
 
     // 8xy7: SUBN Vx, Vy
     {
-        id: 'SUBN_Vx_Vy',
+        id: 'SUBN_VX_VY',
 
         name: 'SUBN',
         
@@ -361,7 +360,7 @@
 
     // 8xyE: SHL Vx {, Vy}
     {
-        id: 'SHL_Vx,{,Vy}',
+        id: 'SHL_VX_VY',
 
         name: 'SHL',
         
@@ -382,7 +381,7 @@
 
     // 9xy0: SNE Vx,Vy
     {
-        id: 'SNE_Vx_Vy',
+        id: 'SNE_VX_VY',
 
         name: 'SNE',
         
@@ -417,7 +416,7 @@
             //shift: the right-shift we must use to get the values
             //type: the type of variable
         arguments: [
-            { mask : 0x0fff, shift : 8, type: 'LD'},
+            { mask : 0x0fff, shift : 0, type: 'LD'},
             
         ]
     },
@@ -437,7 +436,7 @@
             //shift: the right-shift we must use to get the values
             //type: the type of variable
         arguments: [
-            { mask : 0x0fff, shift : 8, type: 'NNN'},
+            { mask : 0x0fff, shift : 0, type: 'NNN'},
             
         ]
     },
@@ -466,7 +465,7 @@
 
     //Dxyn
     {
-        id: 'DRW_Vx_Vy_NIBBLE',
+        id: 'DRW_VX_VY_NIBBLE',
 
         name: 'DRW',
         
@@ -485,7 +484,7 @@
 
             { mask: 0x00f0, shift : 4, type: 'R'},
 
-            { mask: 0xfff0, shift: 0, type: 'N'}
+            { mask: 0x000f, shift: 0, type: 'N'}
             
         ]
     },
@@ -516,7 +515,7 @@
 
     //ExA1
     {
-        id: 'SKNP_Vx',
+        id: 'SKNP_VX',
 
         name: 'SKNP',
         
@@ -540,7 +539,7 @@
 
      //Fx07
      {
-        id: 'LD_Vx_DT',
+        id: 'LD_VX_DT',
 
         name: 'LD',
         
@@ -564,7 +563,7 @@
 
     //Fx0A
     {
-        id: 'LD_Vx_K',
+        id: 'LD_VX_K',
 
         name: 'LD',
         
@@ -589,7 +588,7 @@
 
     //Fx15
     {
-        id: 'LD_DT_Vx',
+        id: 'LD_DT_VX',
 
         name: 'LD',
         
@@ -613,7 +612,7 @@
 
     //Fx18
     {
-        id: 'LD_ST_Vx',
+        id: 'LD_ST_VX',
 
         name: 'LD',
         
@@ -661,7 +660,7 @@
 
     //Fx29
     {
-        id: 'LD_F_Vx',
+        id: 'LD_F_VX',
 
         name: 'LD',
         
@@ -685,7 +684,7 @@
 
     //Fx33
     {
-        id: 'LD_B_Vx',
+        id: 'LD_B_VX',
 
         name: 'LD',
         
@@ -733,7 +732,7 @@
 
      //Fx55
      {
-        id: 'LD_[I]_Vx',
+        id: 'LD_I_VX',
 
         name: 'LD',
         
@@ -757,7 +756,7 @@
 
     //Fx65
     {
-        id: 'LD_Vx_I',
+        id: 'LD_VX_I',
 
         name: 'LD',
         
