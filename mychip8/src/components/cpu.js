@@ -161,20 +161,24 @@ class Chip8_CPU {
                 }
                 break
             case 'JP_ADDR':
-                this.program_counter = args[0]
+                this.program_counter = args[0] 
+                
                 break
             case 'CALL_ADDR':
                 this.Stack_ptr = this.Stack_ptr + 1
-                this.Stack[this.Stack_ptr] = this.program_counter + 2
-                this.program_counter = args[0]
+                this.Stack[this.Stack_ptr] = this.program_counter 
+                this.program_counter = args[0] 
                 break
             case 'RET':
                 console.log('zsdadasdasd')
-                this.program_counter = this.Stack[-1];
+                this.program_counter = this.Stack[this.Stack_ptr];
                 this.Stack_ptr = this.Stack_ptr - 1
+                
+                
                 break
             case 'SE_VX_BTYE':
-                if(this.registers[[args[0]]] == this.registers[[args[1]]]){
+                let val = this.registers[[args[0]]]
+                if(val === args[1]){
                     this.program_counter += 2
                 }
                 break
@@ -200,9 +204,10 @@ class Chip8_CPU {
                 }
                 break
             case 'SE_VX_BYTE':
-                if(this.registers[[args[0]]] == this.registers[[args[1]]]){
+                if(this.registers[[args[0]]] == args[1]){
                     this.program_counter +=2
                 }
+                break
             case 'LD_VX_VY':
                 this.registers[[args[0]]] = this.registers[[args[1]]]
                 break
@@ -231,7 +236,7 @@ class Chip8_CPU {
                     this.registers[0XF] = 0
                 }
                 this.registers[[args[0]]] >>= 1
-                
+                break
             case 'SHL_VX_VY':
 
                 if(this.registers[args[0]] & 0x1000){
@@ -293,7 +298,7 @@ class Chip8_CPU {
                 break
             case 'LD_F_VX':
                 this.Index_Register = (this.registers[args[0]] & (0xF))*5;
-            
+                break
             case 'LD_B_VX':
                 let hundreds = Math.floor(this.registers[args[0]] / 100)
                 let tens = Math.floor((this.registers[args[0]] - (hundreds*100)) / 10)
@@ -354,6 +359,7 @@ class Chip8_CPU {
         console.log(instruction,'instr')
 
         this.execute(instruction,currentKey,context)
+        
 
         
     }

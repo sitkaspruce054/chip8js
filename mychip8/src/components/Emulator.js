@@ -14,7 +14,7 @@ import tetris from './roms/TETRIS'
  * This component should be in charge of initializing the CPU, loading the desired file into the CPU, and beginning execution loop
  */
  async function loadRom(){
-    const response = await fetch(tetris)
+    const response = await fetch(ibm)
     console.log(response,'sd')
     let buff = await response.arrayBuffer()
     

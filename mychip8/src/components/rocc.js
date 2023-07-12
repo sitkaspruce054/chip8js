@@ -58,7 +58,7 @@ function Display({ current_program, currentKey, updateCurrentKey }) {
         //console.log('in here now')
         
         cpu_state.step(currentKey,canvasRef.current.getContext('2d'))
-    }, 3000);
+    }, 2);
 
     return ()=> clearInterval()
     }
