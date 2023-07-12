@@ -18,7 +18,7 @@
             //shift: the right-shift we must use to get the values
             //type: the type of variable
         arguments: [
-            
+            { mask: 0x0fff, shift: 0, type: 'NNN'}
             
         ]
     }, 
@@ -39,7 +39,7 @@
             //shift: the right-shift we must use to get the values
             //type: the type of variable
         arguments: [
-  
+            { mask: 0x0fff, shift: 0, type: 'NNN'}
         ]
     },
 
