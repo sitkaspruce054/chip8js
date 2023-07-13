@@ -1,15 +1,22 @@
 import React from "react";
 import { useEffect, } from "react";
+import { useState } from "react";
 
 
+function Keyboard({onKeyPress}){
+    const [coolDown, setCoolDown] = useState(false);
+    function onClick(event,key){
+        event.preventDefault();
+        onKeyPress(key);
+        if(!coolDown){
+            setCoolDown(true);
+            setTimeout(()=>{onKeyPress(null);setCoolDown(false);}, 200)
+        }
+    }
 
-function Keyboard({keyPress,setKey}){
-    const keys = [
-        '1','2','3','4',
-        'q','w','e','r',
-        'a','s','d','f',
-        'z','x','c','v'
-
-    ]
-
+    return(
+        <div></div>
+    )
 }
+
+export default Keyboard

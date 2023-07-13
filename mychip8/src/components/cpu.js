@@ -117,7 +117,7 @@ class Chip8_CPU {
         const id = instruction.instruction.id
         
         const args = instruction.args
-        console.log(id,args)
+        //console.log(id,args)
         switch (id) {
             case 'DRW_VX_VY_NIBBLE':
                 let x_coord = this.registers[args[0]] % 64
@@ -144,7 +144,7 @@ class Chip8_CPU {
                     }
                     this.registers[0xf] = regVF
                 }
-                console.log(this.display)
+                //console.log(this.display)
                 this.render(context)
                 
 
@@ -199,7 +199,7 @@ class Chip8_CPU {
                 this.registers[args[0]] += args[1]
                 break
             case 'SNE_VX_BYTE':
-                if(this.registers[[args[0]]] != this.registers[[args[1]]]){
+                if(this.registers[[args[0]]] != args[1]){
                     this.program_counter += 2
                 }
                 break
@@ -208,64 +208,62 @@ class Chip8_CPU {
                     this.program_counter +=2
                 }
                 break
+            case 'SE_VX_VY':
+                if(this.registers[args[0]] == this.registers[args[1]]){
+                    this.program_counter += 2
+
+                }
+                break
             case 'LD_VX_VY':
-                this.registers[[args[0]]] = this.registers[[args[1]]]
+                this.registers[args[0]] = this.registers[args[1]]
                 break
             case 'OR_VX_VY':
-                this.registers[[args[0]]] = this.registers[[args[0]]] | this.registers[[args[1]]]
+                this.registers[args[0]] = this.registers[args[0]] | this.registers[[args[1]]]
                 break
             case 'AND_VX_VY':
-                this.registers[[args[0]]] =this.registers[[args[0]]] & this.registers[[args[1]]]
+                this.registers[args[0]] =this.registers[args[0]] & this.registers[args[1]]
                 break
             case 'XOR_VX_VY':
-                this.registers[[args[0]]] = this.registers[[args[0]]] ^= this.registers[[args[1]]]
+                this.registers[args[0]] = this.registers[args[0]] ^= this.registers[args[1]]
                 break
             case 'SUB_VX_VY':
-                if(this.registers[[args[0]]]>this.registers[[args[1]]]){
+                if(this.registers[args[0]]>this.registers[args[1]]){
                     this.registers[0xF] = 1
                 }else{
-                    this.registers = 0
+                    this.registers[0xF] = 0
                 }
-                this.registers[[args[0]]] = this.registers[[args[0]]] - this.registers[[args[1]]]
+                this.registers[args[0]] = this.registers[args[0]] - this.registers[args[1]]
                 break
             case 'SHR_VX_VY':
                 //TODO: reconfigure based on implementation
-                if(this.registers[[0]] & 0x1){
-                    this.registers[0xF] = 1
-                }else{
-                    this.registers[0XF] = 0
-                }
-                this.registers[[args[0]]] >>= 1
+                this.registers[0xf] = this.registers[args[0]] & 1
+                this.registers[args[0]] >>= 1
                 break
             case 'SHL_VX_VY':
-
-                if(this.registers[args[0]] & 0x1000){
-                    this.registers[0xF] = 1
-                }else{
-                    this.registers[0XF] = 0
-                }
-                this.registers[[args[0]]] <<= 1
+                //8xyE
+                this.registers[0xf] = this.registers[args[0]] >> 7 & 1
+                this.registers[args[0]] <<=1 % (1 << 8)
                 break
             case 'SUBN_VX_VY':
                 //8xy7
-                if(this.registers[args[0]]> this.registers[args[1]]){
+                if(this.registers[args[1]]> this.registers[args[0]]){
                     this.registers[0xF] = 1
                 }else{
-                    this.register[0xF] = 0
+                    this.registers[0xF] = 0
                 }
                 this.registers[args[0]] = this.registers[args[1]] - this.registers[args[0]]
                 break
             case 'SNE_VX_VY':
-                if(this.registers[args[0]] != this.registers[args[1]]){
+                if(this.registers[args[0]] !== this.registers[args[1]]){
                     this.program_counter += 2
                 }
                 break
             case 'RND_VX_BYTE':
-                let rand = Math.floor(Math.random(255))
-                this.registers[args[0]] = this.registers[args[1]] & rand
+                let rand = Math.floor(Math.random()*0xff)
+                this.registers[args[0]] = args[1] & rand
                 break
             case 'JP_V0_ADDR':
-                this.program_counter = args[0] + args[1]
+                this.program_counter = this.registers[0] + args[1]
                 break
             case 'SKP_VX':
                 if(currentKey == args[0]){
@@ -308,14 +306,14 @@ class Chip8_CPU {
                 this.registers[this.Index_Register+2] = ones
                 break
             case 'LD_I_VX':
-                for (let reg_ct = 0; reg_ct <  this.registers[args[0]]; reg_ct++) {
+                for (let reg_ct = 0; reg_ct <  args[0]; reg_ct++) {
                     this.memory[this.Index_Register+reg_ct] = this.registers[reg_ct]
                     
                     
                 }
                 break
             case 'LD_VX_I':
-                for (let reg_ct = 0; reg_ct <  this.registers[args[0]]; reg_ct++) {
+                for (let reg_ct = 0; reg_ct <  args[0]; reg_ct++) {
                     this.registers[reg_ct] = this.memory[this.Index_Register+reg_ct]
                         
                         

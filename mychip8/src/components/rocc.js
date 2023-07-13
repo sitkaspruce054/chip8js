@@ -13,7 +13,7 @@ import { Chip8_CPU } from "./cpu";
  * This component will mediate the cpu flow, taking in the currentProgram, key-setting function, and the currently pressed key. It will use the useEffect to load in the file, listen for keys pressed, as well as to loop the cpu (using 
  * cpustate and keypressed as dependencies )
  */
-function Display({ current_program, currentKey, updateCurrentKey }) {
+function Display({ current_program, currentKey, onKeyPress }) {
   const [cpu_state, set_cpu_state] = useState();
 
   const canvasRef = useRef(null);
@@ -25,12 +25,28 @@ function Display({ current_program, currentKey, updateCurrentKey }) {
     context.fillRect(0,0,context.canvas.width,context.canvas.height)
 
 
-  },);
+  },[]);
   
+  useEffect(()=>{
+    document.addEventListener('keydown', (event)=>{
+      event.preventDefault()
+      onKeyPress(event.code)
+    })
+    document.addEventListener('keyup',(event)=>{
+      event.preventDefault()
+      onKeyPress(null)
+    })
+    return() =>{
+      document.removeEventListener('keydown',()=>onKeyPress(null))
+      document.removeEventListener('keyup',()=>onKeyPress(null))
+    }
+
+    
+  },)
   useEffect(()=>{
     
     if(current_program){
-      console.log('here')
+      //console.log('here')
       
       
       let parsed_prgm = new RomReader(current_program)
@@ -53,6 +69,7 @@ function Display({ current_program, currentKey, updateCurrentKey }) {
     if(cpu_state){
       cpu_state.addSpritestoMem()
       cpu_state.loadIntoMem(cpu_state.current_program)
+      
       //console.log(cpu_state)
       setInterval(() => {
         //console.log('in here now')
@@ -63,10 +80,31 @@ function Display({ current_program, currentKey, updateCurrentKey }) {
     return ()=> clearInterval()
     }
     else{
-      console.log('shhshs')
+      //console.log('shhshs')
       return
     }
     
+},[cpu_state,currentKey])
+useEffect(()=>{
+  if(cpu_state){
+    const timer_interval = setInterval(()=>{
+      if(cpu_state.delay_timer > 0){
+        cpu_state.delay_timer -- ;
+      }
+      if(cpu_state.sound_timer > 0){
+        cpu_state.sound_timer --
+        
+      }
+  
+     
+      cpu_state.render(canvasRef.current.getContext('2d'));
+      
+    },2);
+
+    return ()=> clearInterval(timer_interval)
+  }
+
+  
 },[cpu_state])
   
   return (

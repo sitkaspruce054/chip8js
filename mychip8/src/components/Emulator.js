@@ -2,11 +2,15 @@ import { Chip8_CPU } from "./cpu";
 //import ibm from './IBM.ch8'
 import Display from "./rocc";
 import React from "react";
+
+
 import { useState, useContext } from "react";
 import { useEffect } from "react";
 import Keyboard from "./Keyboard";
 import ibm from './roms/IBM'
 import tetris from './roms/TETRIS'
+import test1 from './roms/TEST1'
+import test2 from './roms/TEST2'
 
 /** OVERALL STRUCTURE:
  * 
@@ -14,11 +18,11 @@ import tetris from './roms/TETRIS'
  * This component should be in charge of initializing the CPU, loading the desired file into the CPU, and beginning execution loop
  */
  async function loadRom(){
-    const response = await fetch(ibm)
-    console.log(response,'sd')
+    const response = await fetch(tetris)
+    //console.log(response,'sd')
     let buff = await response.arrayBuffer()
     
-    console.log(buff,'buffy')
+    //console.log(buff,'buffy')
     return buff
     
 }
@@ -26,6 +30,7 @@ import tetris from './roms/TETRIS'
 
 function Emulator(){
     const [program, setProgram] = useState();
+    const [currentKey,onKeyPress] = useState();
   
     useEffect(()=>{
         ///console.log('called')
@@ -46,7 +51,10 @@ function Emulator(){
     
     
     return(
-        <Display current_program ={program}></Display>
+        <>
+            <Display current_program ={program} currentKey = {currentKey} onKeyPress = {onKeyPress}></Display>
+            <Keyboard onKeyPress = {onKeyPress}></Keyboard>
+        </>
     )
 }
 
