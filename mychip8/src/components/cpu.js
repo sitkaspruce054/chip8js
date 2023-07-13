@@ -75,7 +75,14 @@ class Chip8_CPU {
         })
         
     }
-
+    tick(){
+        if(this.delay_timer > 0){
+            this.delay_timer --
+        }
+        if(this.sound_timer > 0){
+            this.sound_timer --
+        }
+    }
     addSpritestoMem(){
 
         const internal_font = [
@@ -351,10 +358,10 @@ class Chip8_CPU {
             return
         }
         const opcode = this.fetch()
-        console.log(opcode,'cur_code')
+        //console.log(opcode,'cur_code')
         this.program_counter += 2
         const instruction = this.decode(opcode)
-        console.log(instruction,'instr')
+        //console.log(instruction,'instr')
 
         this.execute(instruction,currentKey,context)
         

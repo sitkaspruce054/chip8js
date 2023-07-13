@@ -192,7 +192,7 @@
 
     //8xy0: LD Vx, Vy
     {
-        id: 'OR_VX_VY',
+        id: 'LD_VX_VY',
 
         name: 'LD',
         

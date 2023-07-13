@@ -56,6 +56,7 @@ function Display({ current_program, currentKey, onKeyPress }) {
       
       set_cpu_state(new_state)
       
+
       //cpu_state.rom_loader()
       
     }
@@ -64,18 +65,24 @@ function Display({ current_program, currentKey, onKeyPress }) {
     }
   },[current_program]);
   //console.log(cpu_state)
+  let timer = 0
   useEffect(()=>{
-
+    console.log(timer)
     if(cpu_state){
+      
       cpu_state.addSpritestoMem()
       cpu_state.loadIntoMem(cpu_state.current_program)
-      
       //console.log(cpu_state)
       setInterval(() => {
         //console.log('in here now')
-        
+        timer += 1
+        console.log(timer)
+        if(timer % 5 === 0){
+          cpu_state.tick()
+          timer = 0
+        }
         cpu_state.step(currentKey,canvasRef.current.getContext('2d'))
-    }, 2);
+    }, 3);
 
     return ()=> clearInterval()
     }
@@ -85,28 +92,31 @@ function Display({ current_program, currentKey, onKeyPress }) {
     }
     
 },[cpu_state,currentKey])
-useEffect(()=>{
-  if(cpu_state){
-    const timer_interval = setInterval(()=>{
-      if(cpu_state.delay_timer > 0){
-        cpu_state.delay_timer -- ;
-      }
-      if(cpu_state.sound_timer > 0){
-        cpu_state.sound_timer --
-        
-      }
-  
-     
-      cpu_state.render(canvasRef.current.getContext('2d'));
-      
-    },2);
+/**
+ * 
 
-    return ()=> clearInterval(timer_interval)
-  }
+    useEffect(()=>{
+      if(cpu_state){
+        const timer_interval = setInterval(()=>{
+          if(cpu_state.delay_timer > 0){
+            cpu_state.delay_timer -- ;
+          }
+          if(cpu_state.sound_timer > 0){
+            cpu_state.sound_timer --
+            
+          }
+      
+        
+          cpu_state.render(canvasRef.current.getContext('2d'));
+          
+        },2);
+
+        return ()=> clearInterval(timer_interval)
+      }
 
   
 },[cpu_state])
-  
+*/
   return (
     <>
       <canvas ref={canvasRef} height={320} width={640}/>
