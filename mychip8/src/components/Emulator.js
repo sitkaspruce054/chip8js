@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import Keyboard from "./Keyboard";
 import ibm from './roms/IBM'
 import tetris from './roms/TETRIS'
+import pong from './roms/PONG'
 import test1 from './roms/TEST1'
 import test2 from './roms/TEST2'
 
@@ -18,7 +19,7 @@ import test2 from './roms/TEST2'
  * This component should be in charge of initializing the CPU, loading the desired file into the CPU, and beginning execution loop
  */
  async function loadRom(){
-    const response = await fetch(tetris)
+    const response = await fetch(pong)
     //console.log(response,'sd')
     let buff = await response.arrayBuffer()
     
@@ -30,14 +31,16 @@ import test2 from './roms/TEST2'
 
 function Emulator(){
     const [program, setProgram] = useState();
-    const [currentKey,onKeyPress] = useState();
-  
+    const [currentKey, updateKey] = useState();
     useEffect(()=>{
         ///console.log('called')
         let a = loadRom()
         a.then(function(result){setProgram(new Uint8Array(result))})
         //console.log(program,'a')
     },[])
+
+
+   
 
     
 
@@ -52,8 +55,9 @@ function Emulator(){
     
     return(
         <>
-            <Display current_program ={program} currentKey = {currentKey} onKeyPress = {onKeyPress}></Display>
-            <Keyboard onKeyPress = {onKeyPress}></Keyboard>
+            <Display current_program ={ program } currentKey = { currentKey} updateKey = { updateKey }></Display>
+            
+            
         </>
     )
 }

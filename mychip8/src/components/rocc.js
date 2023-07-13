@@ -13,8 +13,17 @@ import { Chip8_CPU } from "./cpu";
  * This component will mediate the cpu flow, taking in the currentProgram, key-setting function, and the currently pressed key. It will use the useEffect to load in the file, listen for keys pressed, as well as to loop the cpu (using 
  * cpustate and keypressed as dependencies )
  */
-function Display({ current_program, currentKey, onKeyPress }) {
+const keyMap = [
+  'Digit1','Digit2','Digit3','Digit4',
+  'KeyQ','KeyW','KeyE','KeyR',
+  'KeyA','KeyS','KeyD','KeyF',
+  'KeyZ','KeyX','KeyC','KeyV'
+
+]
+function Display({ current_program, currentKey,updateKey }) {
+  
   const [cpu_state, set_cpu_state] = useState();
+  const curr_key = useRef(0)
 
   const canvasRef = useRef(null);
 
@@ -27,24 +36,9 @@ function Display({ current_program, currentKey, onKeyPress }) {
 
   },[]);
   
+  
   useEffect(()=>{
-    document.addEventListener('keydown', (event)=>{
-      event.preventDefault()
-      onKeyPress(event.code)
-    })
-    document.addEventListener('keyup',(event)=>{
-      event.preventDefault()
-      onKeyPress(null)
-    })
-    return() =>{
-      document.removeEventListener('keydown',()=>onKeyPress(null))
-      document.removeEventListener('keyup',()=>onKeyPress(null))
-    }
-
-    
-  },)
-  useEffect(()=>{
-    
+    console.log('loading rom component mounted')
     if(current_program){
       //console.log('here')
       
@@ -56,6 +50,7 @@ function Display({ current_program, currentKey, onKeyPress }) {
       
       set_cpu_state(new_state)
       
+      
 
       //cpu_state.rom_loader()
       
@@ -65,23 +60,50 @@ function Display({ current_program, currentKey, onKeyPress }) {
     }
   },[current_program]);
   //console.log(cpu_state)
+
+  useEffect(()=>{
+    console.log('listener mounted')
+    document.addEventListener('keydown', (ev)=>{
+      ev.preventDefault();
+      const key_index = keyMap.indexOf(ev.code)
+      if(key_index){
+        //valid keypress
+        let key_bitmask = 1 << key_index
+        curr_key.current = curr_key.current | key_bitmask
+      }
+      updateKey(ev.code);
+      
+    })
+    document.addEventListener('keyup',()=>{
+      updateKey(null)
+      curr_key.current = 0
+      curr_key.current = 0
+
+    })
+  },[])
+
   let timer = 0
   useEffect(()=>{
+    console.log('cycle component mounted')
     console.log(timer)
+    console.log(curr_key.current)
     if(cpu_state){
       
       cpu_state.addSpritestoMem()
       cpu_state.loadIntoMem(cpu_state.current_program)
+      
       //console.log(cpu_state)
       setInterval(() => {
         //console.log('in here now')
         timer += 1
         console.log(timer)
+        console.log(curr_key.current,'aasdasdasdasdasdasdasd')
+        
         if(timer % 5 === 0){
           cpu_state.tick()
           timer = 0
         }
-        cpu_state.step(currentKey,canvasRef.current.getContext('2d'))
+        cpu_state.step(curr_key.current,canvasRef.current.getContext('2d'))
     }, 3);
 
     return ()=> clearInterval()
@@ -91,7 +113,7 @@ function Display({ current_program, currentKey, onKeyPress }) {
       return
     }
     
-},[cpu_state,currentKey])
+},[cpu_state]);
 /**
  * 
 
@@ -120,6 +142,7 @@ function Display({ current_program, currentKey, onKeyPress }) {
   return (
     <>
       <canvas ref={canvasRef} height={320} width={640}/>
+      <h2>the current key is {curr_key.current}</h2>
     </>
   );
 }

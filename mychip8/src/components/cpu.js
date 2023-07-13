@@ -122,7 +122,11 @@ class Chip8_CPU {
     execute(instruction,currentKey,context) {
         
         const id = instruction.instruction.id
-        
+        const key_pressed = currentKey
+        console.log('recognized',key_pressed)
+        if(key_pressed){
+
+        }
         const args = instruction.args
         //console.log(id,args)
         switch (id) {
@@ -273,12 +277,12 @@ class Chip8_CPU {
                 this.program_counter = this.registers[0] + args[1]
                 break
             case 'SKP_VX':
-                if(currentKey == args[0]){
+                if(currentKey & (1 << this.registers[args[0]])){
                     this.program_counter += 2
                 }
                 break
             case 'SKNP_VX':
-                if(currentKey != args[0]){
+                if(!(currentKey & (1 << this.registers[args[0]]))){
                     this.program_counter += 2
                 }
                 break
@@ -383,5 +387,9 @@ class Chip8_CPU {
 
     }
 }
-
+/**
+ * keyMask = 1 <<  keyIndex (from keymap)
+ * keyindex = keyMap.indexof(event.key)
+ * this.keys = this.keys | keyMask
+ */
 export { Chip8_CPU }
