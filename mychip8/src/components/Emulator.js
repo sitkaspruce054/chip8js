@@ -13,6 +13,7 @@ import pong from './roms/PONG'
 import test1 from './roms/TEST1'
 import test2 from './roms/TEST2'
 import test3 from './roms/TEST3'
+import brek from './roms/BREAK'
 
 /** OVERALL STRUCTURE:
  * 
@@ -20,7 +21,7 @@ import test3 from './roms/TEST3'
  * This component should be in charge of initializing the CPU, loading the desired file into the CPU, and beginning execution loop
  */
  async function loadRom(){
-    const response = await fetch(pong)
+    const response = await fetch(tetris)
     //console.log(response,'sd')
     let buff = await response.arrayBuffer()
     
@@ -55,11 +56,11 @@ function Emulator(){
     
     
     return(
-        <>
+        <div className='emulator'>
             <Display current_program ={ program } currentKey = { currentKey} updateKey = { updateKey }></Display>
             
             
-        </>
+        </div>
     )
 }
 

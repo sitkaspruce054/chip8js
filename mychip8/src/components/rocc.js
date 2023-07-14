@@ -24,7 +24,7 @@ function Display({ current_program, currentKey,updateKey }) {
   
   const [cpu_state, set_cpu_state] = useState();
   const curr_key = useRef(0)
-
+  const register_ref = useRef(null)
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -99,12 +99,14 @@ function Display({ current_program, currentKey,updateKey }) {
         //console.log(timer)
         //console.log(curr_key.current,'aasdasdasdasdasdasdasd')
         
-        if(timer % 3 === 0){
+        if(timer % 5 === 0){
           cpu_state.tick()
           timer = 0
         }
+        
         cpu_state.step(curr_key.current,canvasRef.current.getContext('2d'))
-    }, 1);
+        register_ref.current = cpu_state.registers
+    }, 3);
 
     return ()=> clearInterval()
     }
@@ -140,10 +142,10 @@ function Display({ current_program, currentKey,updateKey }) {
 },[cpu_state])
 */
   return (
-    <>
+    <div className="">
       <canvas ref={canvasRef} height={320} width={640}/>
-      <h2>the current key is {curr_key.current}</h2>
-    </>
+      <h2>the current key is {curr_key.current},{register_ref.current}</h2>
+    </div>
   );
 }
 
