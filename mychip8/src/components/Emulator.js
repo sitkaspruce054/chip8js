@@ -12,6 +12,7 @@ import tetris from './roms/TETRIS'
 import pong from './roms/PONG'
 import test1 from './roms/TEST1'
 import test2 from './roms/TEST2'
+import test3 from './roms/TEST3'
 
 /** OVERALL STRUCTURE:
  * 

@@ -123,10 +123,8 @@ class Chip8_CPU {
         
         const id = instruction.instruction.id
         const key_pressed = currentKey
-        console.log('recognized',key_pressed)
-        if(key_pressed){
-
-        }
+        //console.log('recognized',key_pressed)
+        
         const args = instruction.args
         //console.log(id,args)
         switch (id) {
@@ -309,22 +307,26 @@ class Chip8_CPU {
                 this.Index_Register = (this.registers[args[0]] & (0xF))*5;
                 break
             case 'LD_B_VX':
-                let hundreds = Math.floor(this.registers[args[0]] / 100)
-                let tens = Math.floor((this.registers[args[0]] - (hundreds*100)) / 10)
-                let ones = Math.floor(this.registers[args[0]] % 10)
-                this.registers[this.Index_Register] = hundreds
-                this.registers[this.Index_Register+1] = tens
-                this.registers[this.Index_Register+2] = ones
+                let num = this.registers[args[0]]
+
+                const hundreds = Math.floor(num/100)
+                num = num - (hundreds * 100)
+                const tens = Math.floor(num/10)
+                num = num - (tens * 10)
+                const ones = Math.floor(num)
+                this.memory[this.Index_Register] = hundreds
+                this.memory[this.Index_Register+1] = tens
+                this.memory[this.Index_Register+2] = ones
                 break
             case 'LD_I_VX':
-                for (let reg_ct = 0; reg_ct <  args[0]; reg_ct++) {
+                for (let reg_ct = 0; reg_ct <=  args[0]; reg_ct++) {
                     this.memory[this.Index_Register+reg_ct] = this.registers[reg_ct]
                     
                     
                 }
                 break
             case 'LD_VX_I':
-                for (let reg_ct = 0; reg_ct <  args[0]; reg_ct++) {
+                for (let reg_ct = 0; reg_ct <=  args[0]; reg_ct++) {
                     this.registers[reg_ct] = this.memory[this.Index_Register+reg_ct]
                         
                         
@@ -362,11 +364,11 @@ class Chip8_CPU {
             return
         }
         const opcode = this.fetch()
-        //console.log(opcode,'cur_code')
+        console.log(opcode,'cur_code')
         this.program_counter += 2
         const instruction = this.decode(opcode)
         //console.log(instruction,'instr')
-
+        console.log(instruction,instruction.instruction.id,instruction.args)
         this.execute(instruction,currentKey,context)
         
 

@@ -96,15 +96,15 @@ function Display({ current_program, currentKey,updateKey }) {
       setInterval(() => {
         //console.log('in here now')
         timer += 1
-        console.log(timer)
-        console.log(curr_key.current,'aasdasdasdasdasdasdasd')
+        //console.log(timer)
+        //console.log(curr_key.current,'aasdasdasdasdasdasdasd')
         
-        if(timer % 5 === 0){
+        if(timer % 3 === 0){
           cpu_state.tick()
           timer = 0
         }
         cpu_state.step(curr_key.current,canvasRef.current.getContext('2d'))
-    }, 3);
+    }, 1);
 
     return ()=> clearInterval()
     }

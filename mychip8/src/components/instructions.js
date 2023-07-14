@@ -9,7 +9,7 @@
         name: 'CLS',
         
         // the bitmask we use to get the pattern for the instruction
-        mask: 0x00ff,
+        mask: 0xffff,
         //the pattern we get from using the bitmask correctly
         pattern: 0x00E0,
 
@@ -18,7 +18,7 @@
             //shift: the right-shift we must use to get the values
             //type: the type of variable
         arguments: [
-            { mask: 0x0fff, shift: 0, type: 'NNN'}
+            
             
         ]
     }, 
