@@ -13,7 +13,12 @@ import pong from './roms/PONG'
 import test1 from './roms/TEST1'
 import test2 from './roms/TEST2'
 import test3 from './roms/TEST3'
-import brek from './roms/BREAK'
+
+
+import brix from './roms/BRIX'
+import blink from './roms/BLINKY'
+
+import dan from './roms/DAN'
 
 /** OVERALL STRUCTURE:
  * 
@@ -21,7 +26,7 @@ import brek from './roms/BREAK'
  * This component should be in charge of initializing the CPU, loading the desired file into the CPU, and beginning execution loop
  */
  async function loadRom(){
-    const response = await fetch(tetris)
+    const response = await fetch(blink)
     //console.log(response,'sd')
     let buff = await response.arrayBuffer()
     
