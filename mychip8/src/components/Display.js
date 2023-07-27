@@ -109,7 +109,7 @@ function Display({ current_program, currentKey,updateKey }) {
         if(timer % 5 === 0 && !(pause_ref.current)){
           cpu_state.tick()
           timer = 0
-        }else{
+        }else if(pause_ref.current){
           timer -= 1
         }
         

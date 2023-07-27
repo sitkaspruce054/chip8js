@@ -26,7 +26,7 @@ import dan from './roms/DAN'
  * This component should be in charge of initializing the CPU, loading the desired file into the CPU, and beginning execution loop
  */
  async function loadRom(){
-    const response = await fetch(ibm)
+    const response = await fetch(pong)
     //console.log(response,'sd')
     let buff = await response.arrayBuffer()
     

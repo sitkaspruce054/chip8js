@@ -40,5 +40,8 @@
 }
 
 body{
-  background-color: rgba(51, 78, 153, 0.956);
+  background-color: rgb(31, 54, 118);
+  display:flex;
+  align-items: center;
+  flex-direction: column;
 }
