@@ -358,9 +358,9 @@ class Chip8_CPU {
     }
     // this is the main loop
    
-    step(currentKey,context) {
-        if(this.isHalted){
-            
+    step(currentKey,context,ispaused) {
+        if(ispaused){
+            //console.log('PAUSED')
             return
         }
         const opcode = this.fetch()

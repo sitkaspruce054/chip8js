@@ -1,6 +1,6 @@
 import { Chip8_CPU } from "./cpu";
 //import ibm from './IBM.ch8'
-import Display from "./rocc";
+import Display from "./Display";
 import React from "react";
 
 
@@ -26,7 +26,7 @@ import dan from './roms/DAN'
  * This component should be in charge of initializing the CPU, loading the desired file into the CPU, and beginning execution loop
  */
  async function loadRom(){
-    const response = await fetch(blink)
+    const response = await fetch(ibm)
     //console.log(response,'sd')
     let buff = await response.arrayBuffer()
     

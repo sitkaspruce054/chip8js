@@ -8,6 +8,7 @@ import React, { useEffect, useRef, useContext,useState } from "react";
 import { RomReader } from "./rom_reader";
 import displayContext from "./displayContext";
 import { Chip8_CPU } from "./cpu";
+import { get } from "mongoose";
 /**OVERALL STRUCTURE
  * 
  * This component will mediate the cpu flow, taking in the currentProgram, key-setting function, and the currently pressed key. It will use the useEffect to load in the file, listen for keys pressed, as well as to loop the cpu (using 
@@ -23,6 +24,8 @@ const keyMap = [
 function Display({ current_program, currentKey,updateKey }) {
   
   const [cpu_state, set_cpu_state] = useState();
+  const [pausebtn, setpause] = useState();
+  const pause_ref = useRef(false)
   const curr_key = useRef(0)
   const register_ref = useRef(null)
   const canvasRef = useRef(null);
@@ -60,7 +63,11 @@ function Display({ current_program, currentKey,updateKey }) {
     }
   },[current_program]);
   //console.log(cpu_state)
-
+  const togglepause = ()=>{
+    console.log('b4',pause_ref.current)
+    pause_ref.current = !pause_ref.current
+    console.log('after',pause_ref.current)
+  }
   useEffect(()=>{
     console.log('listener mounted')
     document.addEventListener('keydown', (ev)=>{
@@ -99,12 +106,14 @@ function Display({ current_program, currentKey,updateKey }) {
         //console.log(timer)
         //console.log(curr_key.current,'aasdasdasdasdasdasdasd')
         
-        if(timer % 5 === 0){
+        if(timer % 5 === 0 && !(pause_ref.current)){
           cpu_state.tick()
           timer = 0
+        }else{
+          timer -= 1
         }
         
-        cpu_state.step(curr_key.current,canvasRef.current.getContext('2d'))
+        cpu_state.step(curr_key.current,canvasRef.current.getContext('2d'),pause_ref.current)
         register_ref.current = cpu_state.registers
     }, 3);
 
@@ -144,7 +153,7 @@ function Display({ current_program, currentKey,updateKey }) {
   return (
     <div className="">
       <canvas ref={canvasRef} height={320} width={640}/>
-      <h2>the current key is {curr_key.current},{register_ref.current}</h2>
+      <button onClick={togglepause}> PAUSE BUTTON</button>
     </div>
   );
 }
