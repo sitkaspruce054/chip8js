@@ -13,7 +13,7 @@ function App(){
   return(
     
     <displayContext.Provider value={{displayState,setDisplayState}}>
-      <h1>emu</h1>
+      <h1 >Chip8 Emulator</h1>
       <Emulator props ={{displayState,setDisplayState}}/>
     </displayContext.Provider>
   )

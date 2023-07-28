@@ -23,7 +23,7 @@ const keyMap = [
 ]
 function Display({ current_program, currentKey,updateKey }) {
   
-  const [cpu_state, set_cpu_state] = useState();
+  const [cpu_state, set_cpu_state] = useState(null);
   const [pausebtn, setpause] = useState();
   const pause_ref = useRef(false)
   const curr_key = useRef(0)
@@ -37,14 +37,18 @@ function Display({ current_program, currentKey,updateKey }) {
     context.fillRect(0,0,context.canvas.width,context.canvas.height)
 
 
-  },[]);
+  },[current_program]);
   
   
   useEffect(()=>{
     console.log('loading rom component mounted')
     if(current_program){
       //console.log('here')
-      
+      if(cpu_state){
+        cpu_state.reset()
+
+        set_cpu_state(null)
+      }
       
       let parsed_prgm = new RomReader(current_program)
       
@@ -59,8 +63,13 @@ function Display({ current_program, currentKey,updateKey }) {
       
     }
     else{
-      return
+      return ()=> set_cpu_state(null)
     }
+    return () => {
+      set_cpu_state(null)
+      
+    }
+    
   },[current_program]);
   //console.log(cpu_state)
   const togglepause = ()=>{
@@ -114,14 +123,19 @@ function Display({ current_program, currentKey,updateKey }) {
         }
         
         cpu_state.step(curr_key.current,canvasRef.current.getContext('2d'),pause_ref.current)
-        register_ref.current = cpu_state.registers
+        
     }, 3);
 
-    return ()=> clearInterval()
+    return ()=>{
+      clearInterval()
+      set_cpu_state(null)
+    }
     }
     else{
       //console.log('shhshs')
-      return
+      return ()=>{
+        set_cpu_state(null)
+      }
     }
     
 },[cpu_state]);
