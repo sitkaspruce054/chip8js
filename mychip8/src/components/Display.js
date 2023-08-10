@@ -6,9 +6,9 @@
 
 import React, { useEffect, useRef, useContext,useState } from "react";
 import { RomReader } from "./rom_reader";
-import displayContext from "./displayContext";
+
 import { Chip8_CPU } from "./cpu";
-import { get } from "mongoose";
+
 /**OVERALL STRUCTURE
  * 
  * This component will mediate the cpu flow, taking in the currentProgram, key-setting function, and the currently pressed key. It will use the useEffect to load in the file, listen for keys pressed, as well as to loop the cpu (using 
@@ -24,10 +24,10 @@ const keyMap = [
 function Display({ current_program, currentKey,updateKey }) {
   
   const [cpu_state, set_cpu_state] = useState(null);
-  const [pausebtn, setpause] = useState();
+  
   const pause_ref = useRef(false)
   const curr_key = useRef(0)
-  const register_ref = useRef(null)
+  
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -121,8 +121,14 @@ function Display({ current_program, currentKey,updateKey }) {
         }else if(pause_ref.current){
           timer -= 1
         }
-        
-        cpu_state.step(curr_key.current,canvasRef.current.getContext('2d'),pause_ref.current)
+        console.log(canvasRef.current)
+        if(canvasRef.current){
+          cpu_state.step(curr_key.current,canvasRef.current.getContext('2d'),pause_ref.current)
+        }
+        else{
+          clearInterval()
+        }
+        //cpu_state.step(curr_key.current,canvasRef.current.getContext('2d'),pause_ref.current)
         
     }, 3);
 
@@ -167,7 +173,8 @@ function Display({ current_program, currentKey,updateKey }) {
   return (
     <div className="">
       <canvas ref={canvasRef} height={320} width={640}/>
-      <button onClick={togglepause}> PAUSE BUTTON</button>
+      <button onClick={togglepause}> PAUSE </button>
+      
     </div>
   );
 }

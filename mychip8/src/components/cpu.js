@@ -133,12 +133,13 @@ class Chip8_CPU {
                 let y_coord = this.registers[args[1]] & (32-1)
                 let sprite_height = args[2] // stored in the last nibble
                 let row_start = this.Index_Register
-                let row_end = this.Index_Register + args[2]
+                let row_end = this.Index_Register + sprite_height
                 let regVF = 0
                 for(row_start,y_coord; y_coord < 32 && row_start < row_end; row_start++, y_coord++){
                     let sprite_row = this.memory[row_start];
-                    for(let j = 1 << 7,x = x_coord; j> 0 && x < 64; j >>=1,x+=1){
+                    for(let j = 1 << 7,x = x_coord; j> 0 && x < 0x40; j >>=1,x+=1){
                         if((sprite_row & j)===0){
+                            //pixel is empty, so no drawing
                             continue
 
                         }
@@ -179,7 +180,7 @@ class Chip8_CPU {
                 this.program_counter = args[0] 
                 break
             case 'RET':
-                console.log('zsdadasdasd')
+                
                 this.program_counter = this.Stack[this.Stack_ptr];
                 this.Stack_ptr = this.Stack_ptr - 1
                 
@@ -194,11 +195,11 @@ class Chip8_CPU {
             case 'LD_I_ADDR':
                 
                 this.Index_Register = args[0]
-                console.log(this.Index_Register)
+                
                 break
             case 'LD_VX_BYTE':
                 this.registers[args[0]] = args[1]
-                console.log(this.registers[args[0]])
+                
                 
                 break
             case 'JP_ADDR':
@@ -208,12 +209,12 @@ class Chip8_CPU {
                 this.registers[args[0]] += args[1]
                 break
             case 'SNE_VX_BYTE':
-                if(this.registers[[args[0]]] != args[1]){
+                if(this.registers[args[0]] != args[1]){
                     this.program_counter += 2
                 }
                 break
             case 'SE_VX_BYTE':
-                if(this.registers[[args[0]]] == args[1]){
+                if(this.registers[args[0]] == args[1]){
                     this.program_counter +=2
                 }
                 break
@@ -250,8 +251,8 @@ class Chip8_CPU {
                 break
             case 'SHL_VX_VY':
                 //8xyE
-                this.registers[0xf] = this.registers[args[0]] >> 7 & 1
-                this.registers[args[0]] <<=1 % (1 << 8)
+                this.registers[0xf] = this.registers[args[0]] >> 7 & 1 // gets the last bit
+                this.registers[args[0]] <<=1
                 break
             case 'SUBN_VX_VY':
                 //8xy7
@@ -268,7 +269,7 @@ class Chip8_CPU {
                 }
                 break
             case 'RND_VX_BYTE':
-                let rand = Math.floor(Math.random()*0xff)
+                let rand = Math.floor(Math.random()*255)
                 this.registers[args[0]] = args[1] & rand
                 break
             case 'JP_V0_ADDR':
@@ -288,10 +289,11 @@ class Chip8_CPU {
                 this.registers[args[0]] = this.delay_timer
                 break
             case 'LD_VX_K':
-                if(currentKey && this.keyMap.includes(currentKey)){
-                    this.registers[args[0]] = this.keyMap.indexOf(currentKey)
+
+                if(currentKey){
+                    this.registers[args[0]] = Math.log(currentKey)
                 }else{
-                    this.program_counter-=2
+                    this.program_counter -= 2
                 }
                 break
             case 'LD_DT_VX':
@@ -308,7 +310,7 @@ class Chip8_CPU {
                 break
             case 'LD_B_VX':
                 let num = this.registers[args[0]]
-
+                
                 const hundreds = Math.floor(num/100)
                 num = num - (hundreds * 100)
                 const tens = Math.floor(num/10)
@@ -358,7 +360,8 @@ class Chip8_CPU {
     }
     // this is the main loop
    
-    step(currentKey,context,ispaused) {
+    step(currentKey,context,ispaused,iskill) {
+        
         if(ispaused){
             //console.log('PAUSED')
             return

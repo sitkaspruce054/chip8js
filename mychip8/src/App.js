@@ -12,10 +12,10 @@ function App(){
   const [displayState, setDisplayState ] = useState(new Array(64*32).fill(0))
   return(
     
-    <displayContext.Provider value={{displayState,setDisplayState}}>
+    <>
       <h1 >Chip8 Emulator</h1>
       <Emulator props ={{displayState,setDisplayState}}/>
-    </displayContext.Provider>
+    </>
   )
 }
 

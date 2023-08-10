@@ -13,6 +13,13 @@ import pong from './roms/PONG'
 import test1 from './roms/TEST1'
 import test2 from './roms/TEST2'
 import test3 from './roms/TEST3'
+import merlin from './roms/MERLIN'
+import sygzy from './roms/SYZYGY'
+import connect from './roms/CONNECT4'
+import test4 from './roms/FOUR'
+import tank from './roms/TANK'
+import invaders from './roms/INVADERS'
+import astro from './roms/ASTRO1'
 
 
 import brix from './roms/BRIX'
@@ -63,12 +70,36 @@ function Emulator(){
                 break
             case "brix":
                 set_load_helper(brix)
+                break
+            case "pong":
+                set_load_helper(pong)
+                break
+            case "merlin":
+                set_load_helper(merlin)
+                break
+            case "tank":
+                set_load_helper(tank)
+                break
+            case "connect":
+                set_load_helper(connect)
+                break
+            case "space invaders":
+                set_load_helper(invaders)
+                break
+            case "astro":
+                set_load_helper(astro)
+                break
             default:
                 //set_load_helper(ibm)
                 break
 
         }
    }
+
+    const reset = async(e) =>{
+        setProgram(null)
+
+    }
 
     
 
@@ -88,11 +119,21 @@ function Emulator(){
             </Display>
 
             <select onChange={set_prog}>
+                <option value="">SELECT</option>
                 <option value="ibm">IBM Logo</option>
                 <option value="tetris"> Tetris </option>
                 <option value="brix"> Breakout </option>
                 <option value="pong"> Pong </option>
+                <option value="merlin">Merlin</option>
+                <option value="tank">Tank</option>
+                <option value="connect">Connect-4</option>
+                <option value="space invaders">Space Invaders</option>
+                <option value="astro">Astro Dodge</option>
+
+                
             </select>
+
+            <button onClick={reset}/>
             
                 
         </div>
