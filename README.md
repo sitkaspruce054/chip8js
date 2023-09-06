@@ -1,6 +1,9 @@
 # chip8js
 
-A simple chip8 emulator/ interpreter that runs in the web browser
+A simple chip8 emulator/ interpreter that runs in the web browser. 
+
+Known bugs:
+  1. Selecting a new program does not completely reset the display (i.e an old instance of the cpu persists). Only fix right now is to reload the page each time but I need to investigate further.
 
 
 
