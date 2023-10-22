@@ -38,6 +38,9 @@ function Display({ current_program, currentKey,updateKey }) {
 
 
   },[current_program]);
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), [])
+ 
   
   
   useEffect(()=>{
@@ -47,7 +50,7 @@ function Display({ current_program, currentKey,updateKey }) {
       if(cpu_state){
         cpu_state.reset()
 
-        set_cpu_state(null)
+        
       }
       
       let parsed_prgm = new RomReader(current_program)
@@ -56,7 +59,7 @@ function Display({ current_program, currentKey,updateKey }) {
       //console.log(new_state.current_program)
       
       set_cpu_state(new_state)
-      
+     
       
 
       //cpu_state.rom_loader()
@@ -97,7 +100,11 @@ function Display({ current_program, currentKey,updateKey }) {
 
     })
   },[])
-
+  function f(){
+    if(cpu_state){
+     
+    }
+  }
   let timer = 0
   useEffect(()=>{
     console.log('cycle component mounted')
@@ -174,6 +181,7 @@ function Display({ current_program, currentKey,updateKey }) {
     <div className="">
       <canvas ref={canvasRef} height={320} width={640}/>
       <button onClick={togglepause}> PAUSE </button>
+      <button onClick={()=>{window.location.reload()}}></button>
       
     </div>
   );
